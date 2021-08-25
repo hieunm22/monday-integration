@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "monday-integration"
+version = "0.1.0"
+description = ""
+authors = ["Minh Hieu <hieuami@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.68.0"
+uvicorn = {extras = ["standard"], version = "^0.15.0"}
+pydantic = "^1.8.2"
+httpx = "^0.19.0"
+
+[tool.poetry.dev-dependencies]
+black = "^21.7b0"
+pytest = "^6.2.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dev = './scripts.py:rundev'
