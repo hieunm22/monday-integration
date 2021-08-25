@@ -1,45 +1,48 @@
 from typing import Optional
 from json import loads
 from fastapi import Body, FastAPI, Request
-
+import re
 from types_model import ChallengePayload
 
 app = FastAPI()
 
 
-async def handle_challenge(body: Body) -> ChallengePayload:
-    try:
-        load = loads(await body())
-        if load and load.get("challenge"):
-            return ChallengePayload(load)
-    except:
-        return None
+def handle_challenge(payload):
+    print("--------------------")
+    print(payload)
+    # decode here
+    print("--------------------")
+    breakpoint()
+        
 
 
 @app.middleware("http")
 async def challenge_middleware(request: Request, call_next):
-    challenge_result = await handle_challenge(request.body)
-
-    print("challenge_result:", challenge_result)
-
-    if not challenge_result:
-        print("return None, no handle_challenge action")
-        # return None
+    # data = request.json()
+    # breakpoint()
+    payload = await request.body()
+    challenge_result = handle_challenge(payload)
 
     response = await call_next(request)
     return response
 
 
 @app.get("/")
-def home():
+def home_get():
+    print("home_get:")
+    # breakpoint()
     return {"message": "hello world"}
 
 
-@app.post("/handle_challenge")
-def handle_create_item(body = Body(...)):
-    print("this is item:", body)
+@app.post("/")
+def home_post(body=Body(...)):
+    # breakpoint()
+    # load_str = body.decode("utf-8")
+    challenge = str(body)
+    print("challenge:", challenge)
+    return challenge
 
-# @app.delete("/items/{item_id}")
-# def delelte_item(item_id: int, q: Optional[str] = None):
-#     return {"item_id": item_id, "q": q}
+
+
+
 
